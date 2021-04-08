@@ -1,0 +1,10 @@
+.Pokeinfo {
+  margin: 0 20rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Pokeinfo img {
+  width: 320px;
+  height: 320px;
+}

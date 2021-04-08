@@ -1,0 +1,4 @@
+PokeDex React App
+
+1- Inital Goal
+- create a functioning pokedex using React
