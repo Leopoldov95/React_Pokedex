@@ -70,7 +70,7 @@ class Pokedex extends Component {
   async getPokeInfo(url) {
     try {
       let res = await axios.get(url);
-      console.log(res.data);
+      console.log(url);
       return res.data;
     } catch (err) {
       alert(err);
@@ -104,9 +104,6 @@ class Pokedex extends Component {
       currPokemon: data,
     });
     // set state of current pokemon here!!!! use state and setstae!!!
-
-    console.log(this.state.currPokemon);
-    console.log(this.state.currPokemon[0].sprites); // use this to set pokeinfo info
   }
 
   render() {
@@ -206,17 +203,36 @@ class Pokedex extends Component {
             <div className="Pokedex-pokemon">{generatePokemon}</div>
           </div>
         ) : (
-          <div>
-            <h1>Pokemon info</h1>
-            <Pokeinfo
-              img={currentPokemon.sprites.front_default}
-              types={currentPokemon.types}
-              name={currentPokemon.name}
-              weight={currentPokemon.weight}
-              height={currentPokemon.height}
-              abilities={currentPokemon.abilities}
-              id={currentPokemon.id}
-            />
+          <div className="Pokedex-info-container">
+            <div
+              className="Pokedex-prev"
+              onClick={() =>
+                this.handleInfo(`${API_URl}${currentPokemon.id - 1}/`)
+              }
+            >
+              <i class="fas fa-angle-left"></i>
+            </div>
+            <div>
+              <h1>Pokemon info</h1>
+              <Pokeinfo
+                img={currentPokemon.sprites.front_default}
+                types={currentPokemon.types}
+                name={currentPokemon.name}
+                weight={currentPokemon.weight}
+                height={currentPokemon.height}
+                abilities={currentPokemon.abilities}
+                id={currentPokemon.id}
+                stats={currentPokemon.stats}
+              />
+            </div>
+            <div
+              className="Pokedex-next"
+              onClick={() =>
+                this.handleInfo(`${API_URl}${currentPokemon.id + 1}/`)
+              }
+            >
+              <i class="fas fa-angle-right"></i>
+            </div>
           </div>
         )}
       </div>

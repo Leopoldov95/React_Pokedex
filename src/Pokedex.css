@@ -82,3 +82,25 @@
 
   background-color: rgb(128, 126, 126);
 }
+
+.Pokedex-info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Pokedex-prev,
+.Pokedex-next {
+  background-color: #ccc;
+  height: 140px;
+  width: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 3rem;
+}
+.Pokedex-prev:hover,
+.Pokedex-next:hover {
+  opacity: 0.7;
+}
