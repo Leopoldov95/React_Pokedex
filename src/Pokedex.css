@@ -36,33 +36,6 @@
   height: 80px;
 }
 
-.Pokedex-form {
-  margin: 0 2.4rem;
-}
-
-.Pokedex-form .form-border {
-  width: 400px;
-  margin: 6px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: rgba(0, 0, 0, 0.24) 4px 3px 8px;
-}
-
-.Pokedex-form .form-text {
-  border: none;
-  width: 90%;
-}
-.Pokedex-form .form-text:focus {
-  border: none;
-  outline: none;
-}
-
-.Pokedex-form i {
-  color: #333;
-  padding-right: 1rem;
-}
-
 .Pokedex-nav-bottom {
   background-color: #666;
 }
@@ -87,6 +60,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.Pokedex-info-title {
+  display: flex;
+  justify-content: left;
 }
 
 .Pokedex-prev,

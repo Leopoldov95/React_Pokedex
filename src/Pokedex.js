@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Pokecard from "./Pokecard";
 import Pokeinfo from "./Pokeinfo";
+import Autocomplete from "./Autocomplete";
 import "./Pokedex.css";
 import logo from "./pokeball.png";
 // sinc api only returns a set of urls rather than individual json files for each pokemon, may be better to just loop/increment this url based on my numeric needs
@@ -33,7 +34,7 @@ class Pokedex extends Component {
     this.handleInfo = this.handleInfo.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // just want to generate intial display here
     this.getPokemon(0, this.props.defaultList);
   }
@@ -70,7 +71,7 @@ class Pokedex extends Component {
   async getPokeInfo(url) {
     try {
       let res = await axios.get(url);
-      console.log(url);
+
       return res.data;
     } catch (err) {
       alert(err);
@@ -127,17 +128,7 @@ class Pokedex extends Component {
               <h1>Pokedex</h1>
             </div>
             <div>
-              <form className="Pokedex-form">
-                <div class="form-border">
-                  <i class="fas fa-search"> </i>
-                  <input
-                    class="form-text"
-                    type="text"
-                    name="search"
-                    placeholder="Search"
-                  />
-                </div>
-              </form>
+              <Autocomplete displayPokemon={this.handleInfo} />
               <img src={logo} alt="pokeball_icon" />
             </div>
           </div>
@@ -214,6 +205,11 @@ class Pokedex extends Component {
             </div>
             <div>
               <h1>Pokemon info</h1>
+              {/* Will wan to display/generate species here */}
+              <h1 className="Pokedex-info-title">
+                {currentPokemon.name[0].toUpperCase() +
+                  currentPokemon.name.substring(1)}
+              </h1>
               <Pokeinfo
                 img={currentPokemon.sprites.front_default}
                 types={currentPokemon.types}
