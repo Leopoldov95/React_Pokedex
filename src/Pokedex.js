@@ -2,13 +2,16 @@ import React, { Component } from "react";
 import axios from "axios";
 import Pokecard from "./Pokecard";
 import Pokeinfo from "./Pokeinfo";
+import Pokename from "./Pokename";
 import Autocomplete from "./Autocomplete";
 import "./Pokedex.css";
 import logo from "./pokeball.png";
+
 // sinc api only returns a set of urls rather than individual json files for each pokemon, may be better to just loop/increment this url based on my numeric needs
 const API_URl = "https://pokeapi.co/api/v2/pokemon/";
 const IMG_URL =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+const POKE_FORMS = "https://pokeapi.co/api/v2/pokemon-species/";
 
 class Pokedex extends Component {
   static defaultProps = {
@@ -32,9 +35,10 @@ class Pokedex extends Component {
     this.displayPokemon = this.displayPokemon.bind(this);
     this.getPokemon = this.getPokemon.bind(this);
     this.handleInfo = this.handleInfo.bind(this);
+    this.getForms = this.getForms.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     // just want to generate intial display here
     this.getPokemon(0, this.props.defaultList);
   }
@@ -71,14 +75,26 @@ class Pokedex extends Component {
   async getPokeInfo(url) {
     try {
       let res = await axios.get(url);
-
       return res.data;
     } catch (err) {
       alert(err);
     }
   }
 
-  async handleInfo(info) {
+  async getForms(forms) {
+    let data = [];
+    let res = await axios.get(`${POKE_FORMS}${forms}/`);
+    let form = res.data.varieties;
+    if (form.length > 1) {
+      for (let prop of form) {
+        data.push(prop.pokemon);
+      }
+      return data;
+    }
+    return false;
+  }
+
+  async handleInfo(info, forms) {
     let data = [];
     const {
       name,
@@ -87,9 +103,13 @@ class Pokedex extends Component {
       types,
       height,
       abilities,
+      species,
       stats,
       sprites,
     } = await this.getPokeInfo(info);
+
+    let varieties = await this.getForms(forms);
+
     data.push({
       name,
       weight,
@@ -99,18 +119,20 @@ class Pokedex extends Component {
       abilities,
       stats,
       sprites,
+      species,
+      varieties,
     });
     this.setState({
       displayPokedex: false,
       currPokemon: data,
     });
-    // set state of current pokemon here!!!! use state and setstae!!!
+    console.log(this.state.currPokemon);
   }
 
   render() {
     let generatePokemon = this.state.pokemon.map((p) => (
       <Pokecard
-        handleInfo={() => this.handleInfo(p.info)}
+        handleInfo={() => this.handleInfo(p.info, p.id)}
         name={p.name}
         info={p.info}
         id={p.id}
@@ -120,6 +142,7 @@ class Pokedex extends Component {
     ));
 
     let currentPokemon = this.state.currPokemon[0];
+
     return (
       <div className="Pokedex">
         <div className="Pokedex-nav">
@@ -198,18 +221,27 @@ class Pokedex extends Component {
             <div
               className="Pokedex-prev"
               onClick={() =>
-                this.handleInfo(`${API_URl}${currentPokemon.id - 1}/`)
+                this.handleInfo(
+                  `${API_URl}${Number(
+                    currentPokemon.species.url.split("/")[6] - 1
+                  )}/`,
+                  Number(currentPokemon.species.url.split("/")[6] - 1)
+                )
               }
             >
               <i class="fas fa-angle-left"></i>
             </div>
             <div>
               <h1>Pokemon info</h1>
-              {/* Will wan to display/generate species here */}
-              <h1 className="Pokedex-info-title">
-                {currentPokemon.name[0].toUpperCase() +
-                  currentPokemon.name.substring(1)}
-              </h1>
+
+              <Pokename
+                name={currentPokemon.name}
+                varieties={currentPokemon.varieties}
+                handleInfo={this.handleInfo}
+                id={currentPokemon.id}
+                img={currentPokemon.sprites.front_default}
+              />
+
               <Pokeinfo
                 img={currentPokemon.sprites.front_default}
                 types={currentPokemon.types}
@@ -219,12 +251,25 @@ class Pokedex extends Component {
                 abilities={currentPokemon.abilities}
                 id={currentPokemon.id}
                 stats={currentPokemon.stats}
+                forms={currentPokemon.varieties}
+                species={currentPokemon.species}
               />
             </div>
             <div
               className="Pokedex-next"
-              onClick={() =>
-                this.handleInfo(`${API_URl}${currentPokemon.id + 1}/`)
+              onClick={
+                () =>
+                  this.handleInfo(
+                    `${API_URl}${
+                      Number(currentPokemon.species.url.split("/")[6]) + 1
+                    }/`,
+                    Number(currentPokemon.species.url.split("/")[6]) + 1
+                  )
+                /* 
+                this.handleInfo(
+                  `${API_URl}${currentPokemon.species.url.split("/")[6] - 1}/`,
+                  currentPokemon.species.url.split("/")[6] - 1
+                ) */
               }
             >
               <i class="fas fa-angle-right"></i>

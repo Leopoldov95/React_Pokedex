@@ -1,11 +1,8 @@
 import { logRoles } from "@testing-library/dom";
 import React, { Component } from "react";
-import axios from "axios";
 import "./Pokeinfo.css";
 
 const POKE_IMG = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/";
-const POKE_URL = "https://pokeapi.co/api/v2/pokemon/";
-const POKE_FORMS = "https://pokeapi.co/api/v2/pokemon-species/";
 
 class Pokeinfo extends Component {
   constructor(props) {
@@ -16,14 +13,6 @@ class Pokeinfo extends Component {
     this.padToThree = this.padToThree.bind(this);
     this.handleStats = this.handleStats.bind(this);
     this.progressColor = this.progressColor.bind(this);
-  }
-
-  async componentDidMount() {
-    let res = await axios.get(`${POKE_FORMS}${this.props.id}/`);
-    if (res.data.varieties.length > 1) {
-      console.log("this pokemon has more than 1 form");
-      console.log(res.data.varieties);
-    }
   }
 
   padToThree(num) {
@@ -109,6 +98,7 @@ class Pokeinfo extends Component {
   }
 
   render() {
+    console.log(this.props.species.url.split("/")[6]);
     const generateAbilities = this.props.abilities.map((a) => (
       <li>{a.ability.name}</li>
     ));
@@ -133,11 +123,19 @@ class Pokeinfo extends Component {
       </div>
     ));
 
-    let imgSrc = `${POKE_IMG}${this.padToThree(this.props.id)}.png`;
     return (
       <div className="Pokeinfo">
         <div>
-          <img src={imgSrc} alt={`${this.props.name}_img`} />
+          <img
+            src={
+              this.props.id <= 898
+                ? `${POKE_IMG}${this.padToThree(this.props.id)}.png`
+                : this.props.img
+            }
+            /* ref={(img) => (this.img = img)}
+            onError={() => (this.img.src = this.props.img)} */
+            alt={`${this.props.name}_img`}
+          />
         </div>
         <div className="Pokeinfo-info">
           {/*  <div>
@@ -147,7 +145,7 @@ class Pokeinfo extends Component {
           </div> */}
           <div>
             <h2>Pokedex No.</h2>
-            <p>{this.padToThree(this.props.id)}</p>
+            <p>{this.padToThree(this.props.species.url.split("/")[6])}</p>
           </div>
           <div>
             <h2>Type:</h2>

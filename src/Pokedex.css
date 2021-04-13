@@ -62,11 +62,6 @@
   align-items: center;
 }
 
-.Pokedex-info-title {
-  display: flex;
-  justify-content: left;
-}
-
 .Pokedex-prev,
 .Pokedex-next {
   background-color: #ccc;
