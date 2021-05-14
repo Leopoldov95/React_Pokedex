@@ -6,7 +6,12 @@ class ListPokemon extends Component {
     return (
       <li
         className="Listpokemon"
-        onClick={() => this.props.displayPokemon(this.props.url)}
+        onClick={() =>
+          this.props.displayPokemon(
+            this.props.url,
+            this.props.name.toLowerCase()
+          )
+        }
       >
         <img src={this.props.img} alt={this.props.name} />
         {this.props.name}

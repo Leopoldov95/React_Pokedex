@@ -1,9 +1,8 @@
 .Pokecard {
   color: white;
-  background-color: rgb(119, 119, 119);
+  background-color: rgb(180, 180, 180);
   width: 200px;
   height: 300px;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -11,10 +10,13 @@
   margin: 8px;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.24) 4px 3px 8px;
+  transition: all 300ms ease;
 }
 
 .Pokecard:hover {
   cursor: pointer;
+  transform: translateY(-10px);
+  transition: all 300ms ease;
 }
 
 .Pokecard img {
@@ -28,5 +30,4 @@
   font-size: 1.4rem;
   background-color: rgb(243, 62, 62);
   padding: 10px;
-  border-radius: 10px;
 }

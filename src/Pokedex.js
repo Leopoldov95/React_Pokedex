@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
+import uuid from "uuid/dist/v4";
 import Pokecard from "./Pokecard";
 import Pokeinfo from "./Pokeinfo";
 import Pokename from "./Pokename";
-import Autocomplete from "./Autocomplete";
-import "./Pokedex.css";
-import logo from "./pokeball.png";
 
-// sinc api only returns a set of urls rather than individual json files for each pokemon, may be better to just loop/increment this url based on my numeric needs
+import Pokenav from "./Pokenav";
+import "./Pokedex.css";
+import "./media.css";
+
 const API_URl = "https://pokeapi.co/api/v2/pokemon/";
 const IMG_URL =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
@@ -15,14 +16,7 @@ const POKE_FORMS = "https://pokeapi.co/api/v2/pokemon-species/";
 
 class Pokedex extends Component {
   static defaultProps = {
-    defaultList: 151,
-    genTwo: 251,
-    genThree: 386,
-    genFour: 493,
-    genFive: 649,
-    genSix: 721,
-    genSeven: 809,
-    genEight: 898,
+    default: 151,
   };
   constructor(props) {
     super(props);
@@ -36,11 +30,13 @@ class Pokedex extends Component {
     this.getPokemon = this.getPokemon.bind(this);
     this.handleInfo = this.handleInfo.bind(this);
     this.getForms = this.getForms.bind(this);
+    this.handleInput = this.handleInput.bind(this);
+    this.closeAutocomplete = this.closeAutocomplete.bind(this);
   }
 
   componentDidMount() {
     // just want to generate intial display here
-    this.getPokemon(0, this.props.defaultList);
+    this.getPokemon(0, this.props.default);
   }
 
   async getPokemon(start, end) {
@@ -70,6 +66,16 @@ class Pokedex extends Component {
     this.setState({ pokemon: [] });
 
     this.getPokemon(start, end);
+    if (document.querySelector(".myLinks").classList.contains("menu-active")) {
+      document.querySelector(".myLinks").classList.remove("menu-active");
+    }
+  }
+
+  closeAutocomplete() {
+    if (document.querySelector(".Autocomplete-list")) {
+      document.querySelector(".Autocomplete-list").style.display = "none";
+      document.querySelector(".form-text").value = "";
+    }
   }
 
   async getPokeInfo(url) {
@@ -86,15 +92,22 @@ class Pokedex extends Component {
     let res = await axios.get(`${POKE_FORMS}${forms}/`);
     let form = res.data.varieties;
     if (form.length > 1) {
-      for (let prop of form) {
-        data.push(prop.pokemon);
+      if (form[0].pokemon.name !== "pikachu") {
+        for (let prop of form) {
+          data.push(prop.pokemon);
+        }
+      } else {
+        data.push(form[0].pokemon);
       }
+
       return data;
     }
     return false;
   }
 
   async handleInfo(info, forms) {
+    this.closeAutocomplete();
+
     let data = [];
     const {
       name,
@@ -126,7 +139,15 @@ class Pokedex extends Component {
       displayPokedex: false,
       currPokemon: data,
     });
-    console.log(this.state.currPokemon);
+  }
+
+  handleInput(e) {
+    if (
+      e.target.className !== "Autocomplete" ||
+      e.target.className !== "Listpokemon"
+    ) {
+      this.closeAutocomplete();
+    }
   }
 
   render() {
@@ -144,76 +165,15 @@ class Pokedex extends Component {
     let currentPokemon = this.state.currPokemon[0];
 
     return (
-      <div className="Pokedex">
-        <div className="Pokedex-nav">
-          <div className="Pokedex-nav-top">
-            <div>
-              <h1>Pokedex</h1>
-            </div>
-            <div>
-              <Autocomplete displayPokemon={this.handleInfo} />
-              <img src={logo} alt="pokeball_icon" />
-            </div>
-          </div>
-          <div className="Pokedex-nav-bottom">
-            <ul>
-              <li onClick={() => this.displayPokemon(0, 898)}>All</li>
-              <li
-                onClick={() => this.displayPokemon(0, this.props.defaultList)}
-              >
-                Gen 1
-              </li>
-              <li
-                onClick={() =>
-                  this.displayPokemon(this.props.defaultList, this.props.genTwo)
-                }
-              >
-                Gen 2
-              </li>
-              <li
-                onClick={() =>
-                  this.displayPokemon(this.props.genTwo, this.props.genThree)
-                }
-              >
-                Gen 3
-              </li>
-              <li
-                onClick={() =>
-                  this.displayPokemon(this.props.genThree, this.props.genFour)
-                }
-              >
-                Gen 4
-              </li>
-              <li
-                onClick={() =>
-                  this.displayPokemon(this.props.genFour, this.props.genFive)
-                }
-              >
-                Gen 5
-              </li>
-              <li
-                onClick={() =>
-                  this.displayPokemon(this.props.genFive, this.props.genSix)
-                }
-              >
-                Gen 6
-              </li>
-              <li
-                onClick={() =>
-                  this.displayPokemon(this.props.genSix, this.props.genSeven)
-                }
-              >
-                Gen 7
-              </li>
-              <li onClick={() => this.displayPokemon(this.props.genSeven, 898)}>
-                Gen 8
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div className="Pokedex" onClick={this.handleInput}>
+        <Pokenav
+          displayPokemon={this.displayPokemon}
+          handleInfo={this.handleInfo}
+        />
+
         {this.state.displayPokedex ? (
           <div>
-            <h1>React Pokedex</h1>
+            <h1 className="Pokedex-main-title">React Pokedex</h1>
             <div className="Pokedex-pokemon">{generatePokemon}</div>
           </div>
         ) : (
@@ -229,7 +189,7 @@ class Pokedex extends Component {
                 )
               }
             >
-              <i class="fas fa-angle-left"></i>
+              <i className="fas fa-angle-left"></i>
             </div>
             <div>
               <h1>Pokemon info</h1>
@@ -239,6 +199,7 @@ class Pokedex extends Component {
                 varieties={currentPokemon.varieties}
                 handleInfo={this.handleInfo}
                 id={currentPokemon.id}
+                key={uuid()}
                 img={currentPokemon.sprites.front_default}
               />
 
@@ -250,6 +211,7 @@ class Pokedex extends Component {
                 height={currentPokemon.height}
                 abilities={currentPokemon.abilities}
                 id={currentPokemon.id}
+                key={uuid()}
                 stats={currentPokemon.stats}
                 forms={currentPokemon.varieties}
                 species={currentPokemon.species}
@@ -272,10 +234,24 @@ class Pokedex extends Component {
                 ) */
               }
             >
-              <i class="fas fa-angle-right"></i>
+              <i className="fas fa-angle-right"></i>
             </div>
           </div>
         )}
+        <div className="Pokedex-footer">
+          <p>
+            created by{" "}
+            <a href="https://github.com/Leopoldov95" target="#">
+              Leopoldo Ortega
+            </a>
+          </p>
+          <p>
+            powered by{" "}
+            <a href="https://pokeapi.co/" target="#">
+              Pokeapi
+            </a>
+          </p>
+        </div>
       </div>
     );
   }

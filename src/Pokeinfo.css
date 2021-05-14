@@ -2,7 +2,7 @@
   /*  display: flex;
   justify-content: space-between; */
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 30% 30% 40%;
 
   background-color: rgb(245, 241, 241);
   box-shadow: rgba(0, 0, 0, 0.24) 4px 3px 8px;
@@ -70,7 +70,7 @@
   position: relative;
   margin: 15px 0;
   height: 20px;
-  width: 400px;
+  width: 340px;
   margin-left: 1rem;
 }
 

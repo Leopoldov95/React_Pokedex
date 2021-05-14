@@ -1,35 +1,22 @@
-import { logRoles } from "@testing-library/dom";
 import React, { Component } from "react";
 import "./Pokeinfo.css";
 
-const POKE_IMG = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/";
+const POKE_IMG =
+  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
 
 class Pokeinfo extends Component {
   constructor(props) {
     super(props);
 
-    this.handleType = this.handleType.bind(this);
     this.typeColor = this.typeColor.bind(this);
     this.padToThree = this.padToThree.bind(this);
     this.handleStats = this.handleStats.bind(this);
     this.progressColor = this.progressColor.bind(this);
+    this.calcBST = this.calcBST.bind(this);
   }
 
   padToThree(num) {
     return num <= 999 ? `00${num}`.slice(-3) : num;
-  }
-
-  handleType() {
-    const data = this.props.types;
-
-    if (data.length === 1) {
-      return `<span className="Pokeinfo-type">${data[0].type.name}</span>`;
-    } else {
-      return `
-      <span className="Pokeinfo-type">${data[0].type.name}</span>
-      <span className="Pokeinfo-type">${data[1].type.name}</span>
-      `;
-    }
   }
 
   handleStats(num) {
@@ -78,6 +65,8 @@ class Pokeinfo extends Component {
         return "gold";
       case "flying":
         return "lightblue";
+      default:
+        return "white";
     }
   }
 
@@ -97,18 +86,24 @@ class Pokeinfo extends Component {
     }
   }
 
+  calcBST() {
+    const init = 0;
+    const reducer = (total, curr) => {
+      return total + curr.base_stat;
+    };
+    return this.props.stats.reduce(reducer, init);
+  }
   render() {
-    console.log(this.props.species.url.split("/")[6]);
     const generateAbilities = this.props.abilities.map((a) => (
-      <li>{a.ability.name}</li>
+      <li key={a.ability.name}>{a.ability.name}</li>
     ));
     const statName = ["HP", "Attack", "Defense", "Sp. Atk", "Sp. Def", "Speed"];
     let generateStats = this.props.stats.map((s) => (
       <div className="Pokeinfo-stat-container">
         <div>{statName[this.props.stats.indexOf(s)]}:</div>
-        <div class="progress">
+        <div className="progress">
           <div
-            class="progress-done"
+            className="progress-done"
             style={{
               width: `${this.handleStats(s.base_stat)}%`,
               opacity: 1,
@@ -127,22 +122,11 @@ class Pokeinfo extends Component {
       <div className="Pokeinfo">
         <div>
           <img
-            src={
-              this.props.id <= 898
-                ? `${POKE_IMG}${this.padToThree(this.props.id)}.png`
-                : this.props.img
-            }
-            /* ref={(img) => (this.img = img)}
-            onError={() => (this.img.src = this.props.img)} */
+            src={`${POKE_IMG}${this.props.id}.png`}
             alt={`${this.props.name}_img`}
           />
         </div>
         <div className="Pokeinfo-info">
-          {/*  <div>
-            <h1>
-              {this.props.name[0].toUpperCase() + this.props.name.substring(1)}
-            </h1>
-          </div> */}
           <div>
             <h2>Pokedex No.</h2>
             <p>{this.padToThree(this.props.species.url.split("/")[6])}</p>
@@ -199,7 +183,12 @@ class Pokeinfo extends Component {
           </div>
         </div>
 
-        <div className="Pokeinfo-stats">{generateStats}</div>
+        <div className="Pokeinfo-stats">
+          {generateStats}
+          <p>
+            BST: <span style={{ fontWeight: "bold" }}>{this.calcBST()}</span>
+          </p>
+        </div>
       </div>
     );
   }

@@ -3,11 +3,6 @@ import PokeName from "./pokemon.json";
 import ListPokemon from "./ListPokemon";
 import "./Autocomplete.css";
 
-/* 
-  img: `${IMG_URL}${i + 1}.png`,
-
-*/
-
 const API_URL = "https://pokeapi.co/api/v2/pokemon/";
 const IMG_URL =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
@@ -21,7 +16,9 @@ class Autocomplete extends Component {
   }
 
   handleFocus() {
-    alert("in focus");
+    if (document.querySelector(".Autocomplete-list")) {
+      document.querySelector(".Autocomplete-list").style.display = "block";
+    }
   }
 
   handleChange(e) {
@@ -33,6 +30,9 @@ class Autocomplete extends Component {
       this.setState({
         search: PokeName.filter((word) => word.includes(adjustedSearch)),
       });
+    }
+    if (document.querySelector(".Autocomplete-list")) {
+      document.querySelector(".Autocomplete-list").style.display = "block";
     }
   }
 
@@ -48,24 +48,15 @@ class Autocomplete extends Component {
         />
       ));
     }
-    /*   if (document.querySelector(".form-text")) {
-      document.querySelector(".form-text").addEventListener("focusin", () => {
-        document.querySelector(".Autocomplete-list").style.display = "block";
-      });
-
-      document.querySelector(".form-text").addEventListener("focusout", () => {
-        document.querySelector(".Autocomplete-list").style.display = "none";
-      });
-    } */
 
     return (
       <div className="Autocomplete" onKeyUp={this.handleChange}>
         <form className="Autocomplete-form">
-          <div class="form-border">
-            <i class="fas fa-search"> </i>
+          <div className="form-border">
+            <i className="fas fa-search"> </i>
             <input
               onFocus={this.handleFocus}
-              class="form-text"
+              className="form-text"
               type="text"
               name="search"
               placeholder="Search"
@@ -79,8 +70,6 @@ class Autocomplete extends Component {
             ""
           )}
         </form>
-
-        {/* <div>{this.state.search.length > 1 ? displayRes : ""}</div> */}
       </div>
     );
   }
