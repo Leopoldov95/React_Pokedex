@@ -1,2 +1,5 @@
 1 - open .sketch icons
+* - add types on Pokedex display, need this in order to show icons and bg color
 2 - redesign ui
+3 - add React router to go back
+4 - get type info from beggining and then pass as prop to card and info, otherwise each cmponent will require infdivudla call

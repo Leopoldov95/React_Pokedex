@@ -42,6 +42,7 @@ class Pokedex extends Component {
   async getPokemon(start, end) {
     try {
       let res = await axios.get(`${API_URl}?limit=${end}`);
+      console.log(res.data.results);
       let data = res.data.results;
       let pokemon = [];
       for (let i = start; i < end; i++) {
@@ -173,7 +174,7 @@ class Pokedex extends Component {
 
         {this.state.displayPokedex ? (
           <div>
-            <h1 className="Pokedex-main-title">React Pokedex</h1>
+          {/*   <img src="./pokemon-types/bug.png" /> */}
             <div className="Pokedex-pokemon">{generatePokemon}</div>
           </div>
         ) : (
