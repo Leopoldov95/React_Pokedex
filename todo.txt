@@ -1,4 +1,2 @@
-PokeDex React App
-
-1- Inital Goal
-- create a functioning pokedex using React
+1 - open .sketch icons
+2 - redesign ui
