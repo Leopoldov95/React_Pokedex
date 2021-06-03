@@ -174,7 +174,7 @@ class Pokedex extends Component {
 
         {this.state.displayPokedex ? (
           <div>
-          {/*   <img src="./pokemon-types/bug.png" /> */}
+            {/*   <img src="./pokemon-types/bug.png" /> */}
             <div className="Pokedex-pokemon">{generatePokemon}</div>
           </div>
         ) : (
