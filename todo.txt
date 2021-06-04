@@ -1,5 +1,10 @@
-1 - open .sketch icons
-* - add types on Pokedex display, need this in order to show icons and bg color
+1 - open .sketch icons - DONE
+* - add types on Pokedex display, need this in order to show icons and bg color - DONE
 2 - redesign ui
 3 - add React router to go back
-4 - get type info from beggining and then pass as prop to card and info, otherwise each cmponent will require infdivudla call
+* use https://pokeapi.co/api/v2/pokemon-species/ to get the following data
+
+- pokemon description
+- prev evolution pokemon 
+- included in the url is https://pokeapi.co/api/v2/evolution-chain/
+    - used to obtain evolution line/chain 

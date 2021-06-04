@@ -4,6 +4,7 @@ import uuid from "uuid/dist/v4";
 import Pokecard from "./Pokecard";
 import Pokeinfo from "./Pokeinfo";
 import Pokename from "./Pokename";
+import TypeInfo from "./types.json";
 
 import Pokenav from "./Pokenav";
 import "./Pokedex.css";
@@ -42,7 +43,7 @@ class Pokedex extends Component {
   async getPokemon(start, end) {
     try {
       let res = await axios.get(`${API_URl}?limit=${end}`);
-      console.log(res.data.results);
+
       let data = res.data.results;
       let pokemon = [];
       for (let i = start; i < end; i++) {
@@ -91,9 +92,15 @@ class Pokedex extends Component {
   async getForms(forms) {
     let data = [];
     let res = await axios.get(`${POKE_FORMS}${forms}/`);
-    let form = res.data.varieties;
-    if (form.length > 1) {
-      if (form[0].pokemon.name !== "pikachu") {
+    let {
+      evolution_chain,
+      evolves_from_species,
+      flavor_text_entries,
+      varieties,
+    } = res.data;
+    data.push(evolves_from_species, evolution_chain, flavor_text_entries);
+    if (varieties.length > 1) {
+      if (varieties[0].pokemon.name !== "pikachu") {
         for (let prop of form) {
           data.push(prop.pokemon);
         }
@@ -103,7 +110,7 @@ class Pokedex extends Component {
 
       return data;
     }
-    return false;
+    return data;
   }
 
   async handleInfo(info, forms) {
@@ -122,7 +129,8 @@ class Pokedex extends Component {
       sprites,
     } = await this.getPokeInfo(info);
 
-    let varieties = await this.getForms(forms);
+    // left off here, handle the addtional information!
+    let extraData = await this.getForms(forms);
 
     data.push({
       name,
@@ -134,7 +142,7 @@ class Pokedex extends Component {
       stats,
       sprites,
       species,
-      varieties,
+      extraData,
     });
     this.setState({
       displayPokedex: false,
@@ -155,6 +163,7 @@ class Pokedex extends Component {
     let generatePokemon = this.state.pokemon.map((p) => (
       <Pokecard
         handleInfo={() => this.handleInfo(p.info, p.id)}
+        type={TypeInfo[p.id - 1]}
         name={p.name}
         info={p.info}
         id={p.id}
