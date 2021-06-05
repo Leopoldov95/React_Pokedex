@@ -47,11 +47,20 @@ class Pokedex extends Component {
       let data = res.data.results;
       let pokemon = [];
       for (let i = start; i < end; i++) {
+        let name;
+        if (
+          data[i].name.includes("minior") ||
+          data[i].name.includes("mimikyu")
+        ) {
+          name = data[i].name.split("-")[0];
+        } else {
+          name = data[i].name;
+        }
         pokemon.push({
-          name: data[i].name,
+          name: name,
           info: data[i].url,
           id: i + 1,
-          img: `${IMG_URL}${data[i].name}.png`,
+          img: `${IMG_URL}${name}.png`,
         });
       }
       this.setState((st) => ({
@@ -240,7 +249,7 @@ class Pokedex extends Component {
                   </div>
                 </div>
               </div>
-              <Pokename
+              {/*    <Pokename
                 name={currentPokemon.name}
                 varieties={currentPokemon.varData}
                 handleInfo={this.handleInfo}
@@ -248,7 +257,7 @@ class Pokedex extends Component {
                 key={uuid()}
                 img={currentPokemon.sprites.front_default}
               />
-
+ */}
               <Pokeinfo
                 img={currentPokemon.sprites.front_default}
                 types={currentPokemon.types}
@@ -263,6 +272,7 @@ class Pokedex extends Component {
                 species={currentPokemon.species}
                 desc={currentPokemon.desc}
                 evolution={currentPokemon.evolution_chain}
+                handleInfo={this.handleInfo}
               />
             </div>
           </div>

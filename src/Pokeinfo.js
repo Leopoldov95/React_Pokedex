@@ -5,6 +5,8 @@ import "./Pokeinfo.css";
 const POKE_IMG =
   "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
 const SPRITE_IMG = "https://img.pokemondb.net/sprites/home/normal/";
+const SPRITE_ALT =
+  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
 
 class Pokeinfo extends Component {
   constructor(props) {
@@ -238,6 +240,21 @@ class Pokeinfo extends Component {
                 <div className="Pokeinfo-card">
                   <img src={`${SPRITE_IMG}${evo}.png`} />
                   <span>{evo}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h2>Forms</h2>
+            <div>
+              {this.props.forms.map((form) => (
+                <div className="Pokeinfo-forms">
+                  <img
+                    src={`${POKE_IMG}${form.url
+                      .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                      .replace("/", "")}.png`}
+                  />
+                  <span>{form.name}</span>
                 </div>
               ))}
             </div>
