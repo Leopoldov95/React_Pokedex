@@ -16,8 +16,8 @@ class Pokecard extends Component {
       >
         <p>{this.lPad(this.props.id, 3)}</p>
 
-        <div class="Pokecard-bg">
-          <img src="./poke-ball.png" />
+        <div className="Pokecard-bg">
+          <img src="./poke-ball.png" alt="pokeball_backgound" />
         </div>
 
         <img src={this.props.img} alt={this.props.name} />
@@ -27,16 +27,19 @@ class Pokecard extends Component {
               <img
                 className="Pokecard-icon"
                 src={`./pokemon-types/${this.props.type[0]}.png`}
+                alt={this.props.type[0]}
               />
               <img
                 className="Pokecard-icon"
                 src={`./pokemon-types/${this.props.type[1]}.png`}
+                alt={this.props.type[1]}
               />
             </div>
           ) : (
             <img
               className="Pokecard-icon"
               src={`./pokemon-types/${this.props.type[0]}.png`}
+              alt={this.props.type[0]}
             />
           )}
         </span>

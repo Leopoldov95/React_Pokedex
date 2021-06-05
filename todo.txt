@@ -21,3 +21,4 @@ returns 10065
 7 - make app responsive and redesign mobile UI
 8 - fix all React log errors
 9 - refctor, such as using padTothree
+10 - fix next pokemon issue

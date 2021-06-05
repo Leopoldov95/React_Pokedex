@@ -20,11 +20,13 @@
 }
 
 .Pokeinfo-info {
-  padding: 2rem;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.Pokeinfo-info .Pokeinfo-info-name {
+  font-size: 2.3rem;
 }
 .Pokeinfo-info div {
   display: flex;
@@ -94,9 +96,8 @@
 .Pokeinfo-bottom {
   display: flex;
   margin-top: 2rem;
-  justify-content: space-evenly;
+  justify-content: space-between;
   flex-wrap: wrap;
-  padding: 0 2rem;
 }
 
 .Pokeinfo-bottom h2 {
@@ -107,6 +108,7 @@
   display: flex;
   flex-direction: column;
   width: 40%;
+  padding-bottom: 1rem;
 }
 
 .Pokeinfo-bottom > div:first-child > div {
@@ -129,15 +131,23 @@
 .Pokeinfo-bottom > div:last-child > div {
   display: flex;
 }
+.Pokeinfo-bottom > div:last-child > div {
+  overflow-x: auto;
+  max-width: 80vw;
+}
 
 .Pokeinfo-bottom .Pokeinfo-card,
 .Pokeinfo-bottom .Pokeinfo-forms {
   background-color: white;
   border-radius: 20px;
-  margin: 0 1rem;
+  margin: 0 10px;
   display: flex;
   flex-direction: column;
   padding: 0 1rem;
+}
+.Pokeinfo-bottom .Pokeinfo-card:hover,
+.Pokeinfo-bottom .Pokeinfo-forms:hover {
+  cursor: pointer;
 }
 .Pokeinfo-bottom .Pokeinfo-card img,
 .Pokeinfo-bottom .Pokeinfo-forms img {

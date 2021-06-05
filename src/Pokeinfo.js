@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import PokeList from "./pokemon.json";
 import "./Pokeinfo.css";
 
 const POKE_IMG =
@@ -42,12 +43,8 @@ class Pokeinfo extends Component {
           evoArr.push(evolvesTo[0].evolves_to[0].species.name);
         }
       }
-      //console.log(evoArr);
-      //return evoArr;
-      //console.log(...evoArr);
-      //console.log(this.state.evo_forms);
+
       this.setState({ evo_forms: [...evoArr] });
-      console.log(this.state.evo_forms);
     } catch (err) {
       alert(err);
     }
@@ -128,7 +125,7 @@ class Pokeinfo extends Component {
     return this.props.stats.reduce(reducer, init);
   }
   render() {
-    //console.log(evo_forms);
+    //console.log(PokeList.indexOf("Bulbasaur") + 1);
     const generateAbilities = this.props.abilities.map((a) => (
       <li key={a.ability.name}>{a.ability.name}</li>
     ));
@@ -160,9 +157,18 @@ class Pokeinfo extends Component {
             <img
               src={`${POKE_IMG}${this.props.id}.png`}
               alt={`${this.props.name}_img`}
+              onError={(e) => {
+                e.target.src = `${SPRITE_ALT}${this.props.id}.png`;
+              }}
             />
           </div>
           <div className="Pokeinfo-info">
+            <div>
+              <h2 className="Pokeinfo-info-name">
+                {this.props.name[0].toUpperCase() +
+                  this.props.name.substring(1)}
+              </h2>
+            </div>
             <div>
               <h2>Pokedex No.</h2>
               <p>{this.padToThree(this.props.species.url.split("/")[6])}</p>
@@ -237,9 +243,21 @@ class Pokeinfo extends Component {
             <h2>Evolution</h2>
             <div>
               {this.state.evo_forms.map((evo) => (
-                <div className="Pokeinfo-card">
-                  <img src={`${SPRITE_IMG}${evo}.png`} />
-                  <span>{evo}</span>
+                <div
+                  className="Pokeinfo-card"
+                  onClick={() =>
+                    this.props.handleInfo(
+                      `https://pokeapi.co/api/v2/pokemon/${
+                        PokeList.indexOf(
+                          evo[0].toUpperCase() + evo.substring(1)
+                        ) + 1
+                      }`,
+                      evo
+                    )
+                  }
+                >
+                  <img src={`${SPRITE_IMG}${evo}.png`} alt={evo} />
+                  <span>{evo[0].toUpperCase() + evo.substring(1)}</span>
                 </div>
               ))}
             </div>
@@ -248,13 +266,26 @@ class Pokeinfo extends Component {
             <h2>Forms</h2>
             <div>
               {this.props.forms.map((form) => (
-                <div className="Pokeinfo-forms">
+                <div
+                  className="Pokeinfo-forms"
+                  onClick={() =>
+                    this.props.handleInfo(form.url, form.name.split("-")[0])
+                  }
+                >
                   <img
                     src={`${POKE_IMG}${form.url
                       .replace("https://pokeapi.co/api/v2/pokemon/", "")
                       .replace("/", "")}.png`}
+                    alt={form.name}
+                    onError={(e) => {
+                      e.target.src = `${SPRITE_ALT}${form.url
+                        .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                        .replace("/", "")}.png`;
+                    }}
                   />
-                  <span>{form.name}</span>
+                  <span>
+                    {form.name[0].toUpperCase() + form.name.substring(1)}
+                  </span>
                 </div>
               ))}
             </div>

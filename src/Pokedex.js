@@ -3,7 +3,7 @@ import axios from "axios";
 import uuid from "uuid/dist/v4";
 import Pokecard from "./Pokecard";
 import Pokeinfo from "./Pokeinfo";
-import Pokename from "./Pokename";
+//import Pokename from "./Pokename";
 import TypeInfo from "./types.json";
 import PokeJSON from "./pokemon.json";
 
@@ -33,6 +33,7 @@ class Pokedex extends Component {
     this.getForms = this.getForms.bind(this);
     this.handleInput = this.handleInput.bind(this);
     this.closeAutocomplete = this.closeAutocomplete.bind(this);
+    this.handleMenuBtn = this.handleMenuBtn.bind(this);
   }
 
   componentDidMount() {
@@ -82,6 +83,20 @@ class Pokedex extends Component {
     }
   }
 
+  handleMenuBtn() {
+    const x = document.querySelector(".menu-toggle");
+    x.classList.toggle(".active");
+    if (x.classList.contains(".active")) {
+      document.querySelector(".Pokedex-dropdown-items ").style.display =
+        "block";
+    } else {
+      document.querySelector(".Pokedex-dropdown-items ").style.display = "none";
+    }
+
+    //x.classList.toggle("menu-active");
+    //alert("you clicked the menu toggle btn");
+  }
+
   closeAutocomplete() {
     if (document.querySelector(".Autocomplete-list")) {
       document.querySelector(".Autocomplete-list").style.display = "none";
@@ -111,13 +126,8 @@ class Pokedex extends Component {
     }
 
     if (varieties.length > 1) {
-      if (varieties[0].pokemon.name !== "pikachu") {
-        for (let prop of varieties) {
-          //console.log(prop);
-          varData.push(prop.pokemon);
-        }
-      } else {
-        varData.push(varieties[0].pokemon);
+      for (let prop of varieties) {
+        varData.push(prop.pokemon);
       }
 
       return { evolution_chain, desc, varData };
@@ -227,7 +237,29 @@ class Pokedex extends Component {
                   </span>
                 </div>
 
-                <h1>Pokemon info</h1>
+                <div className="Pokedex-dropdown">
+                  <div className="Pokedex-dropdown-menu">
+                    <span>{currentPokemon.name}</span>
+                    <i
+                      class=" menu-toggle fas fa-angle-down"
+                      onClick={this.handleMenuBtn}
+                    ></i>
+                    {/* forms={currentPokemon.varData} */}
+                  </div>
+                  <div className="Pokedex-dropdown-items">
+                    <ul>
+                      {currentPokemon.varData.map((form) => (
+                        <li
+                          onClick={() =>
+                            this.handleInfo(form.url, form.name.split("-")[0])
+                          }
+                        >
+                          {form.name}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
                 <div className="Pokedex-cntrl">
                   <span>
                     {PokeJSON[currentPokemon.id] === undefined
