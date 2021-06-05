@@ -1,60 +1,13 @@
 import React, { Component } from "react";
-import "axios";
 import "./Pokecard.css";
-import axios from "axios";
 
 class Pokecard extends Component {
-  /*   handleTypes(type) {
-  
-    if (type.length > 1) {
-      return `${(
-        <div>
-          <img src="./pokemon-types/${type[0]}.png" />
-          <img src="./pokemon-types/{type[1]}.png" />
-        </div>
-      )}`;
-    } else {
-      return `${(<img src="./pokemon-types/${type[0]}.png" />)}`;
-    }
-  } */
-  /*   <img src="./pokemon-types/bug.png" /> */
   lPad(value, padding) {
     var zeroes = new Array(padding + 1).join("0");
     return (zeroes + value).slice(-padding);
   }
 
-  /*   getTypes(url) {
-    let res = axios.get(url);
-    console.log(res);
-    /*  const typeData = res.data.types;
-    const arr = [];
-    for (let i of typeData) {
-      arr.push(i.type.name);
-    } */
-  /* this.setState({
-        types: [arr],
-      }); 
-    //return arr;
-  } */
-
   render() {
-    //this.getTypes(this.props.info);
-    // let types = this.getTypes(this.props.info);
-    //console.log(types);
-
-    /*   let icons;
-
-    if (this.props.type > 1) {
-      icons = `${(
-        <div>
-          <img src="./pokemon-types/bug.png" />
-          <img src="./pokemon-types/bug.png" />
-        </div>
-      )}`;
-    } else {
-      icons = `${(<img src="./pokemon-types/bug.png" />)}`;
-    } */
-
     return (
       <div
         className="Pokecard"

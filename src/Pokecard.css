@@ -16,7 +16,7 @@
   --bg-normal: rgba(128, 128, 128, 0.7);
   --bg-rock: rgba(165, 42, 42, 0.7);
   --bg-ice: rgba(0, 128, 128, 0.7);
-  --bg-fly: rgba(173, 216, 230, 0.7);
+  --bg-flying: rgba(173, 216, 230, 0.7);
 }
 
 .Pokecard {
@@ -51,7 +51,7 @@
 }
 
 .Pokecard img {
-  width: 150px;
+  width: 120px;
   position: relative;
 }
 

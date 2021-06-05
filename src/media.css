@@ -1,33 +1,3 @@
-@media only screen and (max-width: 1690px) {
-  .Pokedex-pokemon {
-    padding: 1rem;
-  }
-  .Pokeinfo {
-    width: calc(100vw - 50px);
-  }
-  .Pokedex-info-container {
-    justify-content: center;
-  }
-  .Pokedex .Pokedex-prev,
-  .Pokedex .Pokedex-next {
-    height: 140px;
-    width: 70px;
-
-    position: absolute;
-    z-index: 20;
-    top: 50%;
-    opacity: 0.8;
-  }
-
-  .Pokedex .Pokedex-prev {
-    left: 0;
-  }
-
-  .Pokedex .Pokedex-next {
-    right: 0;
-  }
-}
-
 @media only screen and (max-width: 1280px) {
   .Pokeinfo img {
     width: 80%;

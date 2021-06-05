@@ -1,13 +1,17 @@
 .Pokeinfo {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(245, 241, 241);
+  box-shadow: rgba(0, 0, 0, 0.24) 4px 3px 8px;
+  padding: 1.5rem;
+  width: 90%;
+}
+
+.Pokeinfo .Pokeinfo-top {
   /*  display: flex;
   justify-content: space-between; */
   display: grid;
   grid-template-columns: 30% 30% 40%;
-
-  background-color: rgb(245, 241, 241);
-  box-shadow: rgba(0, 0, 0, 0.24) 4px 3px 8px;
-  padding: 1.5rem;
-  width: 70vw;
 }
 
 .Pokeinfo img {
@@ -58,7 +62,8 @@
 }
 
 .Pokeinfo-stat-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 80px auto;
   align-items: center;
   justify-content: space-between;
   margin: 0 3rem;
@@ -84,4 +89,58 @@
   width: 0;
   opacity: 0;
   transition: 0.3s ease 0.1s;
+}
+
+.Pokeinfo-bottom {
+  display: flex;
+  margin-top: 2rem;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.Pokeinfo-bottom h2 {
+  padding-bottom: 1rem;
+}
+
+.Pokeinfo-bottom > div:first-child {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+.Pokeinfo-bottom > div:first-child > div {
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.5;
+  padding: 0 1rem;
+  height: 100%;
+}
+
+.Pokeinfo-bottom > div:last-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.Pokeinfo-bottom > div:last-child > div {
+  display: flex;
+}
+
+.Pokeinfo-bottom .Pokeinfo-card {
+  background-color: white;
+  border-radius: 20px;
+  margin: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+}
+.Pokeinfo-bottom .Pokeinfo-card img {
+  width: 120px;
+  height: 120px;
+}
+.Pokeinfo-bottom .Pokeinfo-card span {
+  display: inline-block;
+  padding: 1rem 0;
 }

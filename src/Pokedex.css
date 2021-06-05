@@ -15,20 +15,29 @@
 
 .Pokedex-info-container {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+}
+
+.Pokedex-info-container .Pokedex-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
 }
 
 .Pokedex-prev,
 .Pokedex-next {
   background-color: #ccc;
-  height: 140px;
-  width: 90px;
+  height: 40px;
+  width: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 3rem;
+  font-size: 2rem;
+  border-radius: 30px;
 }
 .Pokedex-prev:hover,
 .Pokedex-next:hover {
@@ -43,4 +52,13 @@
 .Pokedex-footer a {
   text-decoration: none;
   color: red;
+}
+
+.Pokedex-cntrl {
+  display: flex;
+  align-items: center;
+}
+
+.Pokedex-cntrl span {
+  padding: 0 1rem;
 }

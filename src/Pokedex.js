@@ -5,14 +5,14 @@ import Pokecard from "./Pokecard";
 import Pokeinfo from "./Pokeinfo";
 import Pokename from "./Pokename";
 import TypeInfo from "./types.json";
+import PokeJSON from "./pokemon.json";
 
 import Pokenav from "./Pokenav";
 import "./Pokedex.css";
 import "./media.css";
 
 const API_URl = "https://pokeapi.co/api/v2/pokemon/";
-const IMG_URL =
-  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/";
+const IMG_URL = "https://img.pokemondb.net/sprites/home/normal/";
 const POKE_FORMS = "https://pokeapi.co/api/v2/pokemon-species/";
 
 class Pokedex extends Component {
@@ -51,7 +51,7 @@ class Pokedex extends Component {
           name: data[i].name,
           info: data[i].url,
           id: i + 1,
-          img: `${IMG_URL}${i + 1}.png`,
+          img: `${IMG_URL}${data[i].name}.png`,
         });
       }
       this.setState((st) => ({
@@ -90,30 +90,35 @@ class Pokedex extends Component {
   }
 
   async getForms(forms) {
-    let data = [];
+    let varData = [];
+    let desc;
     let res = await axios.get(`${POKE_FORMS}${forms}/`);
-    let {
-      evolution_chain,
-      evolves_from_species,
-      flavor_text_entries,
-      varieties,
-    } = res.data;
-    data.push(evolves_from_species, evolution_chain, flavor_text_entries);
+    let { evolution_chain, flavor_text_entries, varieties } = res.data;
+    for (let i of flavor_text_entries) {
+      if (i.language.name === "en") {
+        desc = i.flavor_text;
+        break;
+      }
+    }
+
     if (varieties.length > 1) {
       if (varieties[0].pokemon.name !== "pikachu") {
-        for (let prop of form) {
-          data.push(prop.pokemon);
+        for (let prop of varieties) {
+          //console.log(prop);
+          varData.push(prop.pokemon);
         }
       } else {
-        data.push(form[0].pokemon);
+        varData.push(varieties[0].pokemon);
       }
 
-      return data;
+      return { evolution_chain, desc, varData };
     }
-    return data;
+    // these lines of code only trigger if above conditions have not been met
+    varData.push(varieties[0].pokemon);
+    return { evolution_chain, desc, varData };
   }
 
-  async handleInfo(info, forms) {
+  async handleInfo(info, speciesURL) {
     this.closeAutocomplete();
 
     let data = [];
@@ -130,7 +135,7 @@ class Pokedex extends Component {
     } = await this.getPokeInfo(info);
 
     // left off here, handle the addtional information!
-    let extraData = await this.getForms(forms);
+    let { varData, desc, evolution_chain } = await this.getForms(speciesURL);
 
     data.push({
       name,
@@ -142,7 +147,9 @@ class Pokedex extends Component {
       stats,
       sprites,
       species,
-      extraData,
+      varData,
+      desc,
+      evolution_chain,
     });
     this.setState({
       displayPokedex: false,
@@ -187,26 +194,55 @@ class Pokedex extends Component {
             <div className="Pokedex-pokemon">{generatePokemon}</div>
           </div>
         ) : (
-          <div className="Pokedex-info-container">
-            <div
-              className="Pokedex-prev"
-              onClick={() =>
-                this.handleInfo(
-                  `${API_URl}${Number(
-                    currentPokemon.species.url.split("/")[6] - 1
-                  )}/`,
-                  Number(currentPokemon.species.url.split("/")[6] - 1)
-                )
-              }
-            >
-              <i className="fas fa-angle-left"></i>
-            </div>
-            <div>
-              <h1>Pokemon info</h1>
+          <div>
+            <div className="Pokedex-info-container">
+              <div className="Pokedex-header">
+                <div className="Pokedex-cntrl">
+                  <div
+                    className="Pokedex-prev"
+                    onClick={() =>
+                      this.handleInfo(
+                        `${API_URl}${Number(
+                          currentPokemon.species.url.split("/")[6] - 1
+                        )}/`,
+                        Number(currentPokemon.species.url.split("/")[6] - 1)
+                      )
+                    }
+                  >
+                    <i className="fas fa-angle-left"></i>
+                  </div>
+                  <span>
+                    {PokeJSON[currentPokemon.id - 2] === undefined
+                      ? ""
+                      : PokeJSON[currentPokemon.id - 2]}
+                  </span>
+                </div>
 
+                <h1>Pokemon info</h1>
+                <div className="Pokedex-cntrl">
+                  <span>
+                    {PokeJSON[currentPokemon.id] === undefined
+                      ? ""
+                      : PokeJSON[currentPokemon.id]}
+                  </span>
+                  <div
+                    className="Pokedex-next"
+                    onClick={() =>
+                      this.handleInfo(
+                        `${API_URl}${
+                          Number(currentPokemon.species.url.split("/")[6]) + 1
+                        }/`,
+                        Number(currentPokemon.species.url.split("/")[6]) + 1
+                      )
+                    }
+                  >
+                    <i className="fas fa-angle-right"></i>
+                  </div>
+                </div>
+              </div>
               <Pokename
                 name={currentPokemon.name}
-                varieties={currentPokemon.varieties}
+                varieties={currentPokemon.varData}
                 handleInfo={this.handleInfo}
                 id={currentPokemon.id}
                 key={uuid()}
@@ -223,28 +259,11 @@ class Pokedex extends Component {
                 id={currentPokemon.id}
                 key={uuid()}
                 stats={currentPokemon.stats}
-                forms={currentPokemon.varieties}
+                forms={currentPokemon.varData}
                 species={currentPokemon.species}
+                desc={currentPokemon.desc}
+                evolution={currentPokemon.evolution_chain}
               />
-            </div>
-            <div
-              className="Pokedex-next"
-              onClick={
-                () =>
-                  this.handleInfo(
-                    `${API_URl}${
-                      Number(currentPokemon.species.url.split("/")[6]) + 1
-                    }/`,
-                    Number(currentPokemon.species.url.split("/")[6]) + 1
-                  )
-                /* 
-                this.handleInfo(
-                  `${API_URl}${currentPokemon.species.url.split("/")[6] - 1}/`,
-                  currentPokemon.species.url.split("/")[6] - 1
-                ) */
-              }
-            >
-              <i className="fas fa-angle-right"></i>
             </div>
           </div>
         )}
