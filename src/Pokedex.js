@@ -220,6 +220,13 @@ class Pokedex extends Component {
                   <div
                     className="Pokedex-prev"
                     onClick={() =>
+                      PokeJSON[
+                        Number(
+                          currentPokemon.varData[0].url
+                            .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                            .replace("/", "")
+                        ) - 2
+                      ] !== undefined &&
                       this.handleInfo(
                         `${API_URl}${Number(
                           currentPokemon.species.url.split("/")[6] - 1
@@ -297,6 +304,13 @@ class Pokedex extends Component {
                   <div
                     className="Pokedex-next"
                     onClick={() =>
+                      PokeJSON[
+                        Number(
+                          currentPokemon.varData[0].url
+                            .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                            .replace("/", "")
+                        )
+                      ] !== undefined &&
                       this.handleInfo(
                         `${API_URl}${
                           Number(currentPokemon.species.url.split("/")[6]) + 1

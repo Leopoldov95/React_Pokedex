@@ -21,31 +21,33 @@ class Pokecard extends Component {
         </div>
 
         <img src={this.props.img} alt={this.props.name} />
-        <span>
-          {this.props.type.length > 1 ? (
-            <div>
+        <div className="Pokecard-info">
+          <span>
+            {this.props.type.length > 1 ? (
+              <div>
+                <img
+                  className="Pokecard-icon"
+                  src={`./pokemon-types/${this.props.type[0]}.png`}
+                  alt={this.props.type[0]}
+                />
+                <img
+                  className="Pokecard-icon"
+                  src={`./pokemon-types/${this.props.type[1]}.png`}
+                  alt={this.props.type[1]}
+                />
+              </div>
+            ) : (
               <img
                 className="Pokecard-icon"
                 src={`./pokemon-types/${this.props.type[0]}.png`}
                 alt={this.props.type[0]}
               />
-              <img
-                className="Pokecard-icon"
-                src={`./pokemon-types/${this.props.type[1]}.png`}
-                alt={this.props.type[1]}
-              />
-            </div>
-          ) : (
-            <img
-              className="Pokecard-icon"
-              src={`./pokemon-types/${this.props.type[0]}.png`}
-              alt={this.props.type[0]}
-            />
-          )}
-        </span>
-        <h2>
-          {this.props.name[0].toUpperCase() + this.props.name.substring(1)}
-        </h2>
+            )}
+          </span>
+          <h2>
+            {this.props.name[0].toUpperCase() + this.props.name.substring(1)}
+          </h2>
+        </div>
       </div>
     );
   }
