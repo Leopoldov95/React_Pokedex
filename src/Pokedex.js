@@ -231,17 +231,32 @@ class Pokedex extends Component {
                     <i className="fas fa-angle-left"></i>
                   </div>
                   <span>
-                    {PokeJSON[currentPokemon.id - 2] === undefined
+                    {PokeJSON[
+                      Number(
+                        currentPokemon.varData[0].url
+                          .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                          .replace("/", "")
+                      ) - 2
+                    ] === undefined
                       ? ""
-                      : PokeJSON[currentPokemon.id - 2]}
+                      : PokeJSON[
+                          Number(
+                            currentPokemon.varData[0].url
+                              .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                              .replace("/", "")
+                          ) - 2
+                        ]}
                   </span>
                 </div>
 
                 <div className="Pokedex-dropdown">
                   <div className="Pokedex-dropdown-menu">
-                    <span>{currentPokemon.name}</span>
+                    <span>
+                      {currentPokemon.name[0][0].toUpperCase() +
+                        currentPokemon.name.substring(1)}
+                    </span>
                     <i
-                      class=" menu-toggle fas fa-angle-down"
+                      className=" menu-toggle fas fa-angle-down"
                       onClick={this.handleMenuBtn}
                     ></i>
                     {/* forms={currentPokemon.varData} */}
@@ -250,11 +265,12 @@ class Pokedex extends Component {
                     <ul>
                       {currentPokemon.varData.map((form) => (
                         <li
+                          key={form.name}
                           onClick={() =>
                             this.handleInfo(form.url, form.name.split("-")[0])
                           }
                         >
-                          {form.name}
+                          {form.name[0].toUpperCase() + form.name.substring(1)}
                         </li>
                       ))}
                     </ul>
@@ -262,9 +278,21 @@ class Pokedex extends Component {
                 </div>
                 <div className="Pokedex-cntrl">
                   <span>
-                    {PokeJSON[currentPokemon.id] === undefined
+                    {PokeJSON[
+                      Number(
+                        currentPokemon.varData[0].url
+                          .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                          .replace("/", "")
+                      )
+                    ] === undefined
                       ? ""
-                      : PokeJSON[currentPokemon.id]}
+                      : PokeJSON[
+                          Number(
+                            currentPokemon.varData[0].url
+                              .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                              .replace("/", "")
+                          )
+                        ]}
                   </span>
                   <div
                     className="Pokedex-next"

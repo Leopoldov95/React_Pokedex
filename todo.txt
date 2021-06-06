@@ -12,13 +12,13 @@ word.replace("https://pokeapi.co/api/v2/pokemon/","").replace("/","")
 returns 10065
 
 /// focus here ////
-1 - fix images that don't load, maybe add a backup url
-2 - fix form display, adding padding where necesary
+1 - fix images that don't load, maybe add a backup url - DONE
+2 - fix form display, adding padding where necesary - DONE
 3 - deal with pokemon with odd evolutions (such as evee and ralts)
-4 - capitalize first letter of pokemon icon name
+4 - capitalize first letter of pokemon icon name - DONE
 5 - prevent use from clicking back on bulbasaur or forward on calyrx
 6 - add react router
 7 - make app responsive and redesign mobile UI
 8 - fix all React log errors
 9 - refctor, such as using padTothree
-10 - fix next pokemon issue
+10 - fix next pokemon issue when viewing alt forms

@@ -22,11 +22,24 @@
 }
 
 .Pokedex-info-container .Pokedex-header {
-  display: flex;
+  /*  display: flex;
   justify-content: space-between;
   align-items: center;
   width: 90%;
+  margin: 1rem 0; */
+  /* display: flex; */
+  /* justify-content: space-between; */
+  display: grid;
+  align-items: center;
+  width: 85%;
+  /* text-align: center; */
+  /* justify-content: space-around; */
+  grid-template-columns: 1fr 340px 1fr;
   margin: 1rem 0;
+}
+
+.Pokedex-info-container .Pokedex-header > .Pokedex-cntrl:last-child {
+  justify-self: end;
 }
 
 .Pokedex-prev,
@@ -66,7 +79,6 @@
 }
 
 .Pokedex-dropdown {
-  width: 35%;
   position: relative;
 }
 

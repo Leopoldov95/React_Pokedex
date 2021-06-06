@@ -12,16 +12,18 @@ const SPRITE_ALT =
 class Pokeinfo extends Component {
   constructor(props) {
     super(props);
-    this.state = { evo_forms: [] };
+    this.state = { stageZero: [], stageOne: [], stageTwo: [] };
     this.typeColor = this.typeColor.bind(this);
     this.padToThree = this.padToThree.bind(this);
     this.handleStats = this.handleStats.bind(this);
     this.progressColor = this.progressColor.bind(this);
     this.calcBST = this.calcBST.bind(this);
     this.handleEvo = this.handleEvo.bind(this);
+    this.generateEvoCard = this.generateEvoCard.bind(this);
   }
   componentDidMount() {
-    this.handleEvo(this.props.evolution);
+    // this.handleEvo(this.props.evolution);
+    this.handleEvoData(this.props.evolution);
   }
   padToThree(num) {
     return num <= 999 ? `00${num}`.slice(-3) : num;
@@ -45,6 +47,43 @@ class Pokeinfo extends Component {
       }
 
       this.setState({ evo_forms: [...evoArr] });
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  async handleEvoData(url) {
+    try {
+      const evoArr = [];
+      const basic = [];
+      const stageOne = [];
+      const stageTwo = [];
+      const res = await axios.get(url.url);
+      const evoData = res.data.chain;
+      // there are maximum 3 stages of evolution
+      //console.log(evoData.species);
+      // this will alwasy push base form
+      basic.push(evoData.species);
+      if (evoData.evolves_to.length > 0) {
+        for (let form of evoData.evolves_to) {
+          // pushing all stage one pokemon to stageOne
+          stageOne.push(form.species);
+        }
+        if (evoData.evolves_to[0].evolves_to.length > 0) {
+          for (let form of evoData.evolves_to[0].evolves_to) {
+            // pushing all stage two pokemon to stagetwo
+            stageTwo.push(form.species);
+          }
+        }
+      }
+
+      evoArr.push(basic, stageOne, stageTwo);
+
+      this.setState({
+        stageZero: [...basic],
+        stageOne: [...stageOne],
+        stageTwo: [...stageTwo],
+      });
     } catch (err) {
       alert(err);
     }
@@ -124,14 +163,54 @@ class Pokeinfo extends Component {
     };
     return this.props.stats.reduce(reducer, init);
   }
+
+  generateEvoCard(data) {
+    return data.map((evo) => (
+      <div
+        key={evo.name}
+        className="Pokeinfo-card"
+        onClick={() =>
+          this.props.handleInfo(
+            `https://pokeapi.co/api/v2/pokemon/${
+              PokeList.indexOf(
+                evo.name[0].toUpperCase() + evo.name.substring(1)
+              ) + 1
+            }`,
+            evo.name
+          )
+        }
+      >
+        <img
+          src={`${SPRITE_IMG}${evo.name}.png`}
+          alt={evo.name}
+          onError={(e) => {
+            e.target.src = `${SPRITE_ALT}${
+              PokeList.indexOf(
+                evo.name[0].toUpperCase() + evo.name.substring(1)
+              ) + 1
+            }.png`;
+          }}
+        />
+        <span>{evo.name[0].toUpperCase() + evo.name.substring(1)}</span>
+      </div>
+    ));
+  }
   render() {
     //console.log(PokeList.indexOf("Bulbasaur") + 1);
     const generateAbilities = this.props.abilities.map((a) => (
       <li key={a.ability.name}>{a.ability.name}</li>
     ));
+
+    const evoZero = this.generateEvoCard(this.state.stageZero);
+    const evoOne = this.generateEvoCard(this.state.stageOne);
+    const evoTwo = this.generateEvoCard(this.state.stageTwo);
+
     const statName = ["HP", "Attack", "Defense", "Sp. Atk", "Sp. Def", "Speed"];
     let generateStats = this.props.stats.map((s) => (
-      <div className="Pokeinfo-stat-container">
+      <div
+        className="Pokeinfo-stat-container"
+        key={statName[this.props.stats.indexOf(s)]}
+      >
         <div>{statName[this.props.stats.indexOf(s)]}:</div>
         <div className="progress">
           <div
@@ -224,70 +303,40 @@ class Pokeinfo extends Component {
               <ul>{generateAbilities}</ul>
             </div>
           </div>
-
+          <div className="Pokeinfo-desc">
+            <h2>Pokedex Info</h2>
+            <div>
+              <p>{this.props.desc}</p>
+            </div>
+          </div>
+          {/* <div className="Pokeinfo-stats">
+            {generateStats}
+            <p>
+              BST: <span style={{ fontWeight: "bold" }}>{this.calcBST()}</span>
+            </p>
+          </div> */}
+        </div>
+        <div className="Pokeinfo-bottom">
           <div className="Pokeinfo-stats">
             {generateStats}
             <p>
               BST: <span style={{ fontWeight: "bold" }}>{this.calcBST()}</span>
             </p>
           </div>
-        </div>
-        <div className="Pokeinfo-bottom">
-          <div>
+          {/* <div>
             <h2>Description</h2>
             <div>
               <p>{this.props.desc}</p>
             </div>
-          </div>
+          </div> */}
           <div>
             <h2>Evolution</h2>
             <div>
-              {this.state.evo_forms.map((evo) => (
-                <div
-                  className="Pokeinfo-card"
-                  onClick={() =>
-                    this.props.handleInfo(
-                      `https://pokeapi.co/api/v2/pokemon/${
-                        PokeList.indexOf(
-                          evo[0].toUpperCase() + evo.substring(1)
-                        ) + 1
-                      }`,
-                      evo
-                    )
-                  }
-                >
-                  <img src={`${SPRITE_IMG}${evo}.png`} alt={evo} />
-                  <span>{evo[0].toUpperCase() + evo.substring(1)}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h2>Forms</h2>
-            <div>
-              {this.props.forms.map((form) => (
-                <div
-                  className="Pokeinfo-forms"
-                  onClick={() =>
-                    this.props.handleInfo(form.url, form.name.split("-")[0])
-                  }
-                >
-                  <img
-                    src={`${POKE_IMG}${form.url
-                      .replace("https://pokeapi.co/api/v2/pokemon/", "")
-                      .replace("/", "")}.png`}
-                    alt={form.name}
-                    onError={(e) => {
-                      e.target.src = `${SPRITE_ALT}${form.url
-                        .replace("https://pokeapi.co/api/v2/pokemon/", "")
-                        .replace("/", "")}.png`;
-                    }}
-                  />
-                  <span>
-                    {form.name[0].toUpperCase() + form.name.substring(1)}
-                  </span>
-                </div>
-              ))}
+              {evoZero}
+              {evoOne.length > 0 && <i className="fas fa-chevron-right"></i>}
+              {evoOne}
+              {evoTwo.length > 0 && <i className="fas fa-chevron-right"></i>}
+              {evoTwo}
             </div>
           </div>
         </div>

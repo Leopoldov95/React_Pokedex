@@ -41,6 +41,7 @@ class Autocomplete extends Component {
     if (this.state.search.length >= 1) {
       displayRes = this.state.search.map((p) => (
         <ListPokemon
+          key={p}
           name={p}
           displayPokemon={this.props.displayPokemon}
           url={`${API_URL}${PokeName.indexOf(p) + 1}/`}
