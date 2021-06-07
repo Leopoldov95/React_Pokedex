@@ -43,6 +43,18 @@
 
 .mobile-menu {
   display: none;
+  transform: scale(1.4);
+  border: 1px solid white;
+  padding: 2px 4px;
+  border-radius: 5px;
+}
+
+.mobile-menu:hover {
+  opacity: 0.9;
+}
+
+.mobile-menu .icon {
+  color: white;
 }
 
 .menu-active .Pokenav-nav-bottom {

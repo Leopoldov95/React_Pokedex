@@ -22,21 +22,6 @@ class Pokenav extends Component {
     let limit = this.props.limit;
     return (
       <div className="Pokenav">
-        <div className="mobile-menu">
-          <div className="topnav">
-            <a className="mobile-active" href="#home">
-              {" "}
-            </a>
-            <a
-              className="icon"
-              href="#"
-              id="mobile"
-              onClick={this.handleMenuBtn}
-            >
-              <i className="fa fa-bars"></i>
-            </a>
-          </div>
-        </div>
         <div className="Pokenav-nav">
           <div className="myLinks">
             <div className="Pokenav-nav-top">
@@ -46,7 +31,22 @@ class Pokenav extends Component {
 
               <div>
                 <Autocomplete displayPokemon={this.props.handleInfo} />
-                <img src={logo} alt="pokeball_icon" />
+                <img className="Pokenav-logo" src={logo} alt="pokeball_icon" />
+              </div>
+              <div className="mobile-menu">
+                <div className="topnav">
+                  <a className="mobile-active" href="#home">
+                    {" "}
+                  </a>
+                  <a
+                    className="icon"
+                    href="#"
+                    id="mobile"
+                    onClick={this.handleMenuBtn}
+                  >
+                    <i className="fa fa-bars"></i>
+                  </a>
+                </div>
               </div>
             </div>
             <div className="Pokenav-nav-bottom">

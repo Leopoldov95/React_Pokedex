@@ -52,7 +52,7 @@ class Autocomplete extends Component {
 
     return (
       <div className="Autocomplete" onKeyUp={this.handleChange}>
-        <form className="Autocomplete-form">
+        <form className="Autocomplete-form" autoComplete="off">
           <div className="form-border">
             <i className="fas fa-search"> </i>
             <input
