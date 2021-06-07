@@ -97,6 +97,12 @@ class Pokedex extends Component {
     //alert("you clicked the menu toggle btn");
   }
 
+  closeFormSel() {
+    if (document.querySelector(".Pokedex-dropdown-items")) {
+      document.querySelector(".Pokedex-dropdown-items").style.display = "none";
+    }
+  }
+
   closeAutocomplete() {
     if (document.querySelector(".Autocomplete-list")) {
       document.querySelector(".Autocomplete-list").style.display = "none";
@@ -139,7 +145,7 @@ class Pokedex extends Component {
 
   async handleInfo(info, speciesURL) {
     this.closeAutocomplete();
-
+    this.closeFormSel();
     let data = [];
     const {
       name,

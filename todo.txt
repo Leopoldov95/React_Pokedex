@@ -12,8 +12,8 @@ word.replace("https://pokeapi.co/api/v2/pokemon/","").replace("/","")
 returns 10065
 
 /// focus here ////
-4 - fix alt form dropdown menu
-6 - add react router
-7 - make app responsive and redesign mobile UI
+4 - fix alt form dropdown menu - DONE
+6 - add react router 
+7 - make app responsive and redesign mobile UI - DONE
 8 - fix all React log errors
 9 - refctor, such as using padTothree

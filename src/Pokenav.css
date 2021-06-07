@@ -41,8 +41,16 @@
   background-color: rgb(128, 126, 126);
 }
 
+.Pokenav-Autocomplete {
+  width: 92%;
+}
+
+.Pokenav-Autocomplete .Autocomplete {
+  width: 90%;
+}
+
 .mobile-menu {
-  display: none;
+  display: none !important;
   transform: scale(1.4);
   border: 1px solid white;
   padding: 2px 4px;

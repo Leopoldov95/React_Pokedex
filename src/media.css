@@ -67,7 +67,7 @@
   }
 
   .Pokenav-nav-top {
-    justify-content: space-between;
+    justify-content: start;
   }
 }
 @media only screen and (max-width: 650px) {
@@ -84,6 +84,9 @@
 }
 /* MOBILE VIEW */
 @media only screen and (max-width: 580px) {
+  .mobile-menu {
+    display: block !important;
+  }
   .Pokedex-pokemon {
     flex-direction: column;
     align-items: center;
@@ -119,6 +122,12 @@
     left: auto;
   }
 
+  .Pokedex-prev,
+  .Pokedex-next {
+    width: 30px;
+    height: 30px;
+  }
+
   .Pokecard-icon {
     width: 20px !important;
   }
@@ -133,9 +142,58 @@
     transform: none;
     transition: all 300ms ease;
   }
+  .Pokedex-info-container .Pokedex-header {
+    grid-template-columns: 1fr 200px 1fr;
+    width: 90%;
+  }
 
+  .Pokeinfo {
+    padding: 1rem;
+  }
+
+  .Pokeinfo img {
+    width: 252px;
+    height: 252px;
+  }
+
+  .Pokeinfo-info {
+    padding: 0;
+  }
+
+  .Pokeinfo-desc {
+    padding: 1rem 0;
+  }
+
+  .Pokeinfo-stat-container {
+    grid-template-columns: 66px auto;
+    width: 100%;
+    margin: 0;
+  }
+
+  .Pokeinfo-bottom .Pokeinfo-card img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .Autocomplete-list {
+    width: 100%;
+  }
   .Autocomplete-form .form-border {
     width: 85%;
     padding: 6px 12px;
+  }
+
+  .myLinks {
+    display: none !important;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    background-color: #464545;
+  }
+
+  .menu-active {
+    display: flex !important;
   }
 }
