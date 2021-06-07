@@ -17,3 +17,5 @@ returns 10065
 7 - make app responsive and redesign mobile UI - DONE
 8 - fix all React log errors
 9 - refctor, such as using padTothree
+10 - when user cicks on a pokemon, move display to top of page
+11 - fix ability overflow

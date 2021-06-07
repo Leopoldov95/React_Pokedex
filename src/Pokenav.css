@@ -1,3 +1,7 @@
+.Pokenav-nav {
+  position: relative;
+}
+
 .Pokenav-nav-top {
   display: flex;
   justify-content: space-between;
